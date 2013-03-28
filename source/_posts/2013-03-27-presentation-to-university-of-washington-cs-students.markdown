@@ -21,11 +21,11 @@ distinct geographies: Seattle, Michigan and Ukraine.
 
 Without further ado, here is the presentation Jason Baik and I delivered:
 
-<iframe src="http://app.sliderocket.com:80/app/fullplayer.aspx?id=5f1f6533-e1d7-4e04-bff3-c2ebc2b6273c" width="640" height="506" scrolling=no frameBorder="1" style="border:1px solid #333333;border-bottom-style:none"></iframe>
-
-
 <br><br>
 cheers,<br>
 James
+
+<iframe src="http://app.sliderocket.com:80/app/fullplayer.aspx?id=5f1f6533-e1d7-4e04-bff3-c2ebc2b6273c" width="640" height="506" scrolling=no frameBorder="1" style="border:1px solid #333333;border-bottom-style:none"></iframe>
+
 
 {lovingly authored in vim}
