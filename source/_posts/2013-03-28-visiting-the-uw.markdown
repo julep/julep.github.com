@@ -7,12 +7,13 @@ categories: [Presentations, Tools, Recruiting]
 author: James Vastbinder
 ---
 
-Recently Julep was invited to the University of Washington to present to the 
+Recently [Julep](http://www.julep.com/) was invited to the University of Washington to present to the 
 Computer Science students on life in a startup.  We were impressed with the
 number of students present and the lively conversation which ensued.  While 
 Julep has been around as a Nail Parlor for some time, the e-commerce solution 
 will celebrate only it's 2nd birthday this coming summer. 
 
+<!-- more -->
 More intriguing, beginning with myself, the entire engineering team has a 
 tenure of just over six months.  In a very short time we've written a lot of 
 code and evanglized the merits of Lean Agile developement.  In a follow up 
