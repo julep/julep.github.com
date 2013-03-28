@@ -4,7 +4,7 @@
   <title><![CDATA[Julep Tech]]></title>
   <link href="http://tech.julep.com/atom.xml" rel="self"/>
   <link href="http://tech.julep.com/"/>
-  <updated>2013-03-28T09:42:34-07:00</updated>
+  <updated>2013-03-28T09:46:46-07:00</updated>
   <id>http://tech.julep.com/</id>
   <author>
     <name><![CDATA[tech team]]></name>
@@ -157,6 +157,9 @@ right now</li>
 <li><strong>AngularJS</strong> - MV* of the future. Use it for contained projects, where we want to feel like we are in the future</li>
 <li><strong>EmberJS</strong> - Structured, opinionated, but overshadowed by the other two</li>
 </ul>
+
+
+<!-- more -->
 
 
 <h3>The presentation</h3>
