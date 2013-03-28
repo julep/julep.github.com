@@ -23,6 +23,7 @@ right now
 + **AngularJS** - MV* of the future. Use it for contained projects, where we want to feel like we are in the future
 + **EmberJS** - Structured, opinionated, but overshadowed by the other two
 
+<!-- more -->
 ### The presentation
 The presentation notes have all of my talking points, so be sure to 
 [check them out and read along](https://docs.google.com/presentation/d/1CE6bFc6yP09OcIJ6xoFxfkVOkGxUxLFUZWgAQGXvbRA/edit)
