@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Cache Busting Clientside - Julep Tech</title>
+  <meta name="author" content="tech team">
+
+  
+  <meta name="description" content="One of the problems we had to overcome at Julep was cache-busting. This refers to when a client&#8217;s web browser caches a copy of styles.css, and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tech.julep.com/blog/2013/03/26/cache-busting-clientside/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Julep Tech" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35371502-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Julep Tech</a></h1>
+  
+    <h2>Making the site run, and having some fun</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tech.julep.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Cache Busting Clientside</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T14:25:00-07:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>One of the problems we had to overcome at <a href="http://www.julep.com">Julep</a> was <strong>cache-busting</strong>. This refers to when a client&#8217;s web browser caches a copy of <code>styles.css</code>, and doesn&#8217;t know we&#8217;ve made changes to that file and that it needs to download a new version.</p>
+
+<!-- more -->
+
+
+<p>This issue might seem minor at first, a few misaligned blocks, a block of text not styled quite right. The <del>easy</del> wrong answer: <em>Just tell them to refresh the browser, Shift + Refresh!</em></p>
+
+<p>But that isn&#8217;t very nice, and when a user gets a page that is destroyed by out of date javascript and are posting on facebook on your behalf that you need to <em>Shift + Refresh</em>, well that is something you should be finding a solution to.</p>
+
+<p><a href="http://developer.yahoo.com/blogs/ydn/posts/2007/05/high_performanc_2/">Yslow</a> and <a href="https://developers.google.com/speed/docs/best-practices/caching#LeverageBrowserCaching">Google Insights</a> confirm that we should be using <em>far future expirations</em> on these files so that they are aggressively cached.
+The solution they propose to this cache-busting issue is to use the <a href="http://en.wikipedia.org/wiki/HTTP_ETag">ETag</a> property in the headers. It sounds like the perfect solution, but yahoo warns that they are <a href="http://developer.yahoo.com/performance/rules.html#etags">strongly tied to the origin server</a>. The second solution is the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">Last-Modified header</a> which relies on a timestamp handshake between server and client.</p>
+
+<p>We opted for a solution that provides granularity and control, we modify the file name based on the SHA stamp of the last git commit on that file. Every commit has a SHA stamp, and we can guarantee that user&#8217;s are forced new assets when we release code.</p>
+
+<h2>Here is how we solved the issue:</h2>
+
+<ol>
+<li>First we keep a running list of the files that need to be managed</li>
+<li>Then we append the first 8 characters of the SHA stamp for the last git commit to touch that file</li>
+<li>In magento we also have to update xml files where these assets are initially requested. This part is still a manual step.</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>SHA-Stamping Files  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="c"># Create sha stamped assets from this list of files</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">FILES</span><span class="o">=</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="s2">../skin/frontend/julep/default/css/styles.css</span>
+</span><span class='line'><span class="s2">../skin/frontend/julep/default/css/plugins.css</span>
+</span><span class='line'><span class="s2">../skin/frontend/julep/default/js/julep.js</span>
+</span><span class='line'><span class="s2">../skin/frontend/julep/default/js/plugins.min.js</span>
+</span><span class='line'><span class="s2">../js/general/campaign_configuration.js</span>
+</span><span class='line'><span class="s2">../js/general/julep.js</span>
+</span><span class='line'><span class="s2">../js/general/quiz_handler.js</span>
+</span><span class='line'><span class="s2">../skin/frontend/julep/default/css/quiz.css</span>
+</span><span class='line'><span class="s2">&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for </span>f in <span class="nv">$FILES</span>
+</span><span class='line'><span class="k">do</span>
+</span><span class='line'><span class="k">  </span><span class="nv">sha</span><span class="o">=</span><span class="k">$(</span>git log --pretty<span class="o">=</span>oneline -1 <span class="nv">$f</span> | cut -c1-8<span class="k">)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nv">extension</span><span class="o">=</span><span class="s2">&quot;${f##*.}&quot;</span>
+</span><span class='line'>  <span class="nv">filepath</span><span class="o">=</span><span class="s2">&quot;${f%.*}&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  cp <span class="k">${</span><span class="nv">f</span><span class="k">}</span> <span class="k">${</span><span class="nv">filepath</span><span class="k">}</span>_<span class="k">${</span><span class="nv">sha</span><span class="k">}</span>.<span class="k">${</span><span class="nv">extension</span><span class="k">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;Processed: ${f}&quot;</span>;
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note: One weird side-effect is for files like <code>plugins.min.js</code> get renamed <code>plugins.min_12345678.js</code> if that bugs you, be sure to update the bash code above.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adam Willoughby-Knox</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-26T14:25:00-07:00" pubdate data-updated="true">Mar 26<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.julep.com/blog/2013/03/26/cache-busting-clientside/" data-via="" data-counturl="http://tech.julep.com/blog/2013/03/26/cache-busting-clientside/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/01/bringing-that-mvc-clientside/" title="Previous Post: Bringing that MVC clientside">&laquo; Bringing that MVC clientside</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/03/27/presentation-to-university-of-washington-cs-students/" title="Next Post: Presentation to University of Washington CS Students">Presentation to University of Washington CS Students &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/28/a-visit-to-the-uw/">A Visit to the UW</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/27/visiting-the-uw/">Presentation to University of Washington CS Students</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/27/presentation-to-university-of-washington-cs-students/">Presentation to University of Washington CS Students</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/26/cache-busting-clientside/">Cache Busting Clientside</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/bringing-that-mvc-clientside/">Bringing that MVC clientside</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/julep">@julep</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'julep',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - tech team -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'juleptech';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tech.julep.com/blog/2013/03/26/cache-busting-clientside/';
+        var disqus_url = 'http://tech.julep.com/blog/2013/03/26/cache-busting-clientside/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
