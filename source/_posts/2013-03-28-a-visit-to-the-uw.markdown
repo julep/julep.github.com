@@ -21,7 +21,7 @@ distinct geographies: Seattle, Michigan and Ukraine.
 
 Without further ado, here is the presentation Jason Baik and I delivered:
 
-<br><br>
+<br>
 cheers,<br>
 James
 
