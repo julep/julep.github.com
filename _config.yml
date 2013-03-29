@@ -1,8 +1,10 @@
 # ----------------------- #
 #      Main Configs       #
 # ----------------------- #
+#
+#
 
-url: http://tech.julep.com
+url: http://julep.github.com
 title: Julep Software Engineering
 subtitle: Making the site run, and having some fun
 author: Julep Engineering
