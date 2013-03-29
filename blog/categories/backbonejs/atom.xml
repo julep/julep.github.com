@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: BackboneJS | Julep Software Engineering]]></title>
+  <link href="http://julep.github.com/blog/categories/backbonejs/atom.xml" rel="self"/>
+  <link href="http://julep.github.com/"/>
+  <updated>2013-03-29T13:28:53-07:00</updated>
+  <id>http://julep.github.com/</id>
+  <author>
+    <name><![CDATA[Julep Engineering]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Bringing that MVC clientside]]></title>
+    <link href="http://julep.github.com/blog/2013/01/01/bringing-that-mvc-clientside/"/>
+    <updated>2013-01-01T18:59:00-08:00</updated>
+    <id>http://julep.github.com/blog/2013/01/01/bringing-that-mvc-clientside</id>
+    <content type="html"><![CDATA[<p>We started doing brown bag lunch and presentations recently. The lunch was
+Po' Boys from <a href="http://whereyaatmatt.com/">Where ya at matt</a>, and the topic
+was JavaScript MV*.</p>
+
+<p>MVC (<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">Model-View-Controller</a>)
+is a pattern used to keep code organized by dividing it into components.
+Recently this structure has been migrating from the back-end to the front-end.
+Anything that keeps us more organized and standardized is probably a good idea, so we
+decided to look into it more.</p>
+
+<h3>tl;dr</h3>
+
+<ul>
+<li><strong>BackboneJS</strong> - Easy to use, well documented, tons of tuts. You could/should be using it
+right now</li>
+<li><strong>AngularJS</strong> - MV* of the future. Use it for contained projects, where we want to feel like we are in the future</li>
+<li><strong>EmberJS</strong> - Structured, opinionated, but overshadowed by the other two</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h3>The presentation</h3>
+
+<p>The presentation notes have all of my talking points, so be sure to
+<a href="https://docs.google.com/presentation/d/1CE6bFc6yP09OcIJ6xoFxfkVOkGxUxLFUZWgAQGXvbRA/edit">check them out and read along</a></p>
+
+<iframe src="https://docs.google.com/presentation/embed?id=1CE6bFc6yP09OcIJ6xoFxfkVOkGxUxLFUZWgAQGXvbRA&start=false&loop=false&delayms=3000" frameborder="0" width="790" height="621" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+]]></content>
+  </entry>
+  
+</feed>

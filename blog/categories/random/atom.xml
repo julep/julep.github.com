@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Random | Julep Software Engineering]]></title>
+  <link href="http://julep.github.com/blog/categories/random/atom.xml" rel="self"/>
+  <link href="http://julep.github.com/"/>
+  <updated>2013-03-29T13:28:53-07:00</updated>
+  <id>http://julep.github.com/</id>
+  <author>
+    <name><![CDATA[Julep Engineering]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Everybody, Somebody, Anybody and Nobody]]></title>
+    <link href="http://julep.github.com/blog/2013/03/29/everybody/"/>
+    <updated>2013-03-29T12:46:00-07:00</updated>
+    <id>http://julep.github.com/blog/2013/03/29/everybody</id>
+    <content type="html"><![CDATA[<p>This is a little story about four people named Everybody, Somebody, Anybody, and Nobody.
+There was an important job to be done and Everybody was sure that Somebody would do it.</p>
+
+<p>Anybody could have done it, but Nobody did it.</p>
+
+<p>Somebody got angry about that because it was Everybody's job.  Everybody thought that
+Anybody could do it, but Nobody realized that Everybody wouldn't do it.</p>
+
+<p>It ended up that Everybody blamed Somebody when Nobody did what Anybody could have done.</p>
+]]></content>
+  </entry>
+  
+</feed>
